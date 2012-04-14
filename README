@@ -1,61 +1,25 @@
 Replicant
---------------------------------------------------------------------------------------------------------------------------
-This repo is a soccer agent, playing in RoboCup simulation environment. It is built upon WEKA platform, 
-through machine learning approach. You need RCSSserver and RCSSmonitor to run RoboCup similation.
+---------------------------------------------------------
+This repo is a soccer agent, playing in RoboCup simulation environment. It is built upon WEKA platform, through machine learning approach. You need RCSSserver and RCSSmonitor to run RoboCup similation.
 
 
 Directory Structure
---------------------------------------------------------------------------------------------------------------------------
-	|-bin-					// binary class files
+---------------------------------------------------------
+	|-bin-			// binary class files
 	 -src- |				
-		-agent-				// agent-related classes
-		-model-				// model-related classes, such as ModelBuilder and DatasetBuilder
-		-util-				// other utility classes, such as LogParser and XmlUtil
-	 	config.xml			// configuration for each prototype
-	 -libs-					// third-party libraries
-	 -csv-					// csv files as datasets
-	 -models-				// offline-trained models for each prototype
-	 -logs-					// you can use log files at any place, this folder is just for convenience
- 	 -prototype-			// original player applications, just for demonstration usage
-
-
-Demonstration Instruction
---------------------------------------------------------------------------------------------------------------------------
-
-1.Krislet-like
-Krislet is an reactive agent that only considers ball and goal. 
-
-You can simply use Krislet.bat to start a team of five Krislet-like players, or use Krislet_Mixed.bat to start
-three Replicant-Krislet players and two original Krislet players to compare their behavior.
-
-2.A1-like
-A1 is an reactive agent based Krislet. Apart from ball and goal, it also consider the locations of teammates. 
-If the distance between itself and any of its teammates are less than the distance of itself and the ball. It
-will stop running.
-
-You can use A1.bat to start a team of five A1-like players, or use A1_Mixed.bat to start three Replicant-A1 
-players and two original A1 players to compare their behavior.
-
-3.Garfield-like
-Garfield is a very simple state-based player. It start dashing with power of 100, then it slow down 5 each turn, 
-until reaches -10. After that, the dash power will return to 100.
-
-You can use Garfield.bat to start a team of five Garfield-like players, or use Garfield_Mixed.bat to start three 
-Replicant-Garfield players and two original Garfield players to compare their behavior.
-
-To train this agent, we add previous action type, action power and action angle in the dataset. If you are wondering
-what will happen if we don't use previous info. You can edit config.xml under src/. Change the value of <States>
-in <DashPower> of Garfield config from true to false. Then use Garfield_retrain.bat to re-build the model. After
-that, you can use Garfield.bat or Garfield_Mixed.bat. Replicant-Garfield players will run with an almost certain 
-speed around 40.
-
+		-agent-		// agent-related classes
+		-model-		// model-related classes, such as ModelBuilder and DatasetBuilder
+		-util-		// other utility classes, such as LogParser and XmlUtil
+	 	config.xml	// configuration for each prototype
+	 -libs-			// third-party libraries
+	 -csv-			// csv files as datasets
+	 -models-		// offline-trained models for each prototype
+	 -logs-			// this folder is just for convenience
 
 Application Instruction
---------------------------------------------------------------------------------------------------------------------------
-
+---------------------------------------------------------
 0. Libraries and Classpath
-This project needs 2 third-party libraries to run, weka and jdom. If you want to run it in command line, you may 
-need to add classpath information in the command. For example,
+This project needs 2 third-party libraries to run, weka and jdom. If you want to run it in command line, you may need to add classpath information in the command. For example,
 
 	C:\Replicant> java -classpath libs/jdom.jar;libs/weka.jar;bin/ agent.Replicant -proto Krislet
 
@@ -92,11 +56,9 @@ Example:	util.LogParser logs/Krislet_1.lsf Krislet
 
 
 3. ModelBuilder
-Build models from csv file. For one agent, there are 6 models, ActionType, KickPower, KickAngle, DashPower, TurnAngle
-and CatchAngle. 
+Build models from csv file. For one agent, there are 6 models, ActionType, KickPower, KickAngle, DashPower, TurnAngle and CatchAngle. 
 
-You don't always need ModelBuilder if you just want to run the agent by default setting. Replicant will build models
-automaticallly if it can't find them. However, you need to use it to re-train the model after you change the setting.
+You don't always need ModelBuilder if you just want to run the agent by default setting. Replicant will build models automaticallly if it can't find them. However, you need to use it to re-train the model after you change the setting.
 
 USAGE: 		model.ModelBuilder [-parameter value]
 		Parameters:
@@ -106,30 +68,42 @@ USAGE: 		model.ModelBuilder [-parameter value]
 Example:	model.ModelBuilder -proto Garfield
 
 4. Evaluator
-Evaluate performance of specific classifier upon certain dataset. Will Generates a breakdown of the accuracy for each 
-class£¬outputs the performance statistics in summary form and the performance statistics as classification confusion matrix.
+Evaluate performance of specific classifier upon certain dataset. Will Generates a breakdown of the accuracy for each class£¬outputs the performance statistics in summary form and the performance statistics as classification confusion matrix.
 
 USAGE: 		Evaluator prototype model_type classifier
 
 Example:	model.Evaluator Garfield ActionType weka.classifiers.rules.JRip
 
-Notes:		Classifier name should be the full weka class name. Please make sure these classifiers can be used for the 
-		numerical or binominal attribute you want to classify. 
-		
-		Prototype is the name of prototype you used in config.xml.
-			
-		Model Type could be ActionType, KickPower, KickAngle, DashPower and TurnAngle.
+Notes:		Classifier name should be the full weka class name. Please make sure these classifiers can be used for the numerical or binominal attribute you want to classify. Prototype is the name of prototype you used in config.xml. Model Type could be ActionType, KickPower, KickAngle, DashPower and TurnAngle.
 
 
 4. Config
 There are two type of settings can be changed through config.xml.
 
-Classifier: 	    Classification algorithms you want to used for action type, action power and action angle. 
-		    Classifier name should be the full weka class name. Besides, please make sure these classifiers 
-		    can be used for the numerical or binominal attribute you want to classify.
+Classifier: 	     Classification algorithms you want to used for action type, action power and action angle. Classifier name should be the full weka class name. Besides, please make sure these classifiers can be used for the numerical or binominal attribute you want to classify.
 
-DataSet Attributes :DatasetAttributes shows if these attributes should be included in the corresponding dataset. Fpr
-		    instance, learning from Krislet only need ball and goal, but teammates attributes are needed for
-		    A1-like agent. For this part, "True"(case insenstive) will be taken as yes, anthing else will be no.
+DataSet Attributes : DatasetAttributes shows if these attributes should be included in the corresponding dataset. For instance, learning from Krislet only need ball and goal, but teammates attributes are needed for A1-like agent. For this part, "True"(case insenstive) will be taken as yes, anthing else will be no.
 
 After changing the setting, you need to use Modelbuilder to re-train models.
+
+
+Demonstration Instruction
+---------------------------------------------------------
+
+1.Krislet-like
+Krislet is an reactive agent that only considers ball and goal. 
+
+You can simply use Krislet.bat to start a team of five Krislet-like players, or use Krislet_Mixed.bat to start three Replicant-Krislet players and two original Krislet players to compare their behavior.
+
+2.A1-like
+A1 is an reactive agent based Krislet. Apart from ball and goal, it also consider the locations of teammates. If the distance between itself and any of its teammates are less than the distance of itself and the ball. It will stop running.
+
+You can use A1.bat to start a team of five A1-like players, or use A1_Mixed.bat to start three Replicant-A1 players and two original A1 players to compare their behavior.
+
+3.Garfield-like
+Garfield is a very simple state-based player. It start dashing with power of 100, then it slow down 5 each turn, until reaches -10. After that, the dash power will return to 100.
+
+You can use Garfield.bat to start a team of five Garfield-like players, or use Garfield_Mixed.bat to start three Replicant-Garfield players and two original Garfield players to compare their behavior.
+
+To train this agent, we add previous action type, action power and action angle in the dataset. If you are wondering what will happen if we don't use previous info. You can edit config.xml under src/. Change the value of <States> in <DashPower> of Garfield config from true to false. Then use Garfield_retrain.bat to re-build the model. After
+that, you can use Garfield.bat or Garfield_Mixed.bat. Replicant-Garfield players will run with an almost certain speed around 40.
