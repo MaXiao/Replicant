@@ -1,6 +1,6 @@
 Replicant
 ---------------------------------------------------------
-This repo is a soccer agent, playing in RoboCup simulation environment. It is built upon WEKA platform, through machine learning approach. You need RCSSserver and RCSSmonitor to run RoboCup similation.
+This application is a soccer agent, playing in RoboCup simulation environment. It is built upon WEKA platform, through machine learning approach. You need RCSSserver and RCSSmonitor to run RoboCup simulation.
 
 
 Directory Structure
